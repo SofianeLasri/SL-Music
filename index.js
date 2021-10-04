@@ -226,7 +226,7 @@ const { RepeatMode } = require('discord-music-player');
 const player = new Player(client, {
     leaveOnEmpty: false, // This options are optional.
 });
-client.player = player;
+
 
 client.on("ready", async function () {
     console.log('\n'+`
@@ -263,7 +263,7 @@ client.on('interactionCreate', async interaction => {
 
 // Tests
 client.on('messageCreate', async (message) => {
-	let commandPrefix = await botSettings.findOne({where: {name: "commandPrefix" }});
+	let commandPrefix = "!";
     const args = message.content.slice(commandPrefix.length).trim().split(/ +/g);
     const command = args.shift();
     let guildQueue = client.player.getQueue(message.guild.id);
