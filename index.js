@@ -148,6 +148,15 @@ async function initialiseDatabaseTables(){
 			}
 		}
 
+		let commandPrefix = await botSettings.findOne({where: {name: "commandPrefix" }});
+		if(commandPrefix == null){
+			console.log('['+'INSERT'.brightMagenta+'] Insertion de commandPrefix'.brightWhite);
+			let clientId = botSettings.create({
+				name: "commandPrefix",
+				value: "!"
+			});
+		}
+
 		console.log('['+'SUCCES'.brightGreen+'] Tables initialisées avec succès.'.brightWhite);
 	} catch (error) {
 		console.error('['+'ERREUR'.brightRed+'] Erreur lors de l\'initialisation des tables:'.brightWhite+'\n', error);
@@ -253,7 +262,8 @@ client.on('interactionCreate', async interaction => {
 
 // Tests
 client.on('messageCreate', async (message) => {
-    const args = message.content.slice(settings.prefix.length).trim().split(/ +/g);
+	let commandPrefix = await botSettings.findOne({where: {name: "commandPrefix" }});
+    const args = message.content.slice(commandPrefix.length).trim().split(/ +/g);
     const command = args.shift();
     let guildQueue = client.player.getQueue(message.guild.id);
 
