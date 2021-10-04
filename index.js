@@ -226,6 +226,7 @@ const { RepeatMode } = require('discord-music-player');
 const player = new Player(client, {
     leaveOnEmpty: false, // This options are optional.
 });
+client.player = player;
 
 client.on("ready", async function () {
     console.log('\n'+`
