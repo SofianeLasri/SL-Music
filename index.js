@@ -243,7 +243,17 @@ client.on("ready", async function () {
 
 // Commandes
 client.on('interactionCreate', async interaction => {
-	const args = message.content.slice(settings.prefix.length).trim().split(/ +/g);
+	if (interaction.isCommand()){
+		console.log('['+'COMMANDE'.brightMagenta+'] '.brightWhite+interaction.user.username.brightBlue+' a lancé la commande '.brightWhite+interaction.commandName.yellow);
+		if (interaction.commandName === 'ping') {
+			await interaction.reply('Pong!');
+		}
+	}	
+});
+
+// Tests
+client.on('messageCreate', async (message) => {
+    const args = message.content.slice(settings.prefix.length).trim().split(/ +/g);
     const command = args.shift();
     let guildQueue = client.player.getQueue(message.guild.id);
 
@@ -331,7 +341,7 @@ client.on('interactionCreate', async interaction => {
         // [======>              ][00:35/2:20]
         console.log(ProgressBar.prettier);
     }
-});
+})
 
 
 // login to Discord with your app's token
