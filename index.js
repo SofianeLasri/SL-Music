@@ -231,8 +231,6 @@ client.on("ready", async function () {
       `);
   console.log("");
   console.log("Bot démarré".brightGreen);
-  
-  checkAnniv();
 });
 
 // Commandes
