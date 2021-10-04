@@ -220,8 +220,6 @@ const { Client, Intents, MessageActionRow, MessageButton } = require('discord.js
 const client = new Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES", "GUILD_VOICE_STATES"] });
 
 const { Player } = require("discord-music-player");
-//Test
-const { RepeatMode } = require('discord-music-player');
 
 const player = new Player(client, {
     leaveOnEmpty: false, // This options are optional.
@@ -295,15 +293,15 @@ client.on('messageCreate', async (message) => {
     }
 
     if(command === 'removeLoop') {
-        guildQueue.setRepeatMode(RepeatMode.DISABLED); // or 0 instead of RepeatMode.DISABLED
+        guildQueue.setRepeatMode(Player.DISABLED); // or 0 instead of Player.DISABLED
     }
 
     if(command === 'toggleLoop') {
-        guildQueue.setRepeatMode(RepeatMode.SONG); // or 1 instead of RepeatMode.SONG
+        guildQueue.setRepeatMode(Player.SONG); // or 1 instead of Player.SONG
     }
 
     if(command === 'toggleQueueLoop') {
-        guildQueue.setRepeatMode(RepeatMode.QUEUE); // or 2 instead of RepeatMode.QUEUE
+        guildQueue.setRepeatMode(Player.QUEUE); // or 2 instead of Player.QUEUE
     }
 
     if(command === 'setVolume') {
