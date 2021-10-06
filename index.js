@@ -308,10 +308,7 @@ client.on('messageCreate', async (message) => {
     if(command === 'play') {
         let queue = client.player.createQueue(message.guild.id);
         await queue.join(message.member.voice.channel);
-        let song = await queue.play(args.join(' ')).catch(_ => {
-            if(!guildQueue)
-                //queue.stop();
-        });
+        let song = await queue.play(args.join(' '));
     }
 
     if(command === 'playlist') {
