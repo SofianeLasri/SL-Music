@@ -219,11 +219,18 @@ const { Client, Intents, MessageActionRow, MessageButton } = require('discord.js
 // create a new Discord client
 const client = new Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES", "GUILD_VOICE_STATES"] });
 
-const { Player } = require("discord-music-player");
+// Tests
+const settings = {
+    prefix: '!',
+    token: 'YourBotTokenHere'
+};
 
+const { Player } = require("discord-music-player");
 const player = new Player(client, {
     leaveOnEmpty: false, // This options are optional.
 });
+// You can define the Player as *client.player* to easly access it.
+client.player = player;
 
 // Init the event listener only once (at the top of your code).
 client.player
