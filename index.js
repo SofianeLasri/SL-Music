@@ -362,7 +362,7 @@ client.on('interactionCreate', async interaction => {
 				}else{
 					await interaction.reply("Musique: "+guildQueue.nowPlaying);
 				}
-				await interaction.reply("song: "+song);
+				console.log("song: "+song);
 			});
 		}
 
