@@ -209,7 +209,7 @@ async function initialiseDatabaseTables(){
 		}
 
 		let commandPrefix = await botSettings.findOne({where: {name: "commandPrefix" }});
-		if (commandPrefix == null){
+		if(commandPrefix == null){
 			console.log('['+'INSERT'.brightMagenta+'] Insertion de commandPrefix'.brightWhite);
 			let clientId = botSettings.create({
 				name: "commandPrefix",
