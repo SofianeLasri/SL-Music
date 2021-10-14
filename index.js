@@ -47,6 +47,66 @@ const memberSettings = sequelize.define('bot_memberSettings', {
 const commands = [{
 	name: 'ping',
 	description: 'Répond avec pong!'
+},
+{
+	name: 'play',
+	description: 'Permet de jouer une musique.',
+	options: [{
+		name: "titre", // no uppercase as well
+		description: "Titre de la vidéo sur YouTube",
+		type: 3,
+		required: true
+	}]
+},
+{
+	name: 'playlist',
+	description: 'Permet de jouer une playliste.',
+	options: [{
+		name: "titre", // no uppercase as well
+		description: "Titre de la playlist sur YouTube",
+		type: 3,
+		required: true
+	}]
+},
+{
+	name: 'skip',
+	description: 'Passe à la musique suivante'
+},
+{
+	name: 'stop',
+	description: 'Stoppe la musique'
+},
+{
+	name: 'removeLoop',
+	description: 'Supprimer la boucle'
+},
+{
+	name: 'toggleLoop',
+	description: 'Activer la boucle'
+},
+{
+	name: 'toggleQueueLoop',
+	description: 'Activer la boucle de la liste'
+},
+{
+	name: 'setVolume',
+	description: 'Permet de régler le volume.',
+	options: [{
+		name: "volume", // no uppercase as well
+		description: "Volume en %.",
+		type: 4,
+		required: true
+	}]
+},
+{
+	name: 'delanniv',
+	description: '[Admin] Supprime la date d\'anniversaire d\'un membre.',
+	options: [{
+		name: "membre", // no uppercase as well
+		description: "Membre à supprimer la date d'anniversaire.",
+		type: 6,
+		required: true
+	}]
 }];
 
 ////////////////////////////////////////////////////////////////
@@ -149,7 +209,7 @@ async function initialiseDatabaseTables(){
 		}
 
 		let commandPrefix = await botSettings.findOne({where: {name: "commandPrefix" }});
-		if(commandPrefix == null){
+		if (interaction.commandNamePrefix == null){
 			console.log('['+'INSERT'.brightMagenta+'] Insertion de commandPrefix'.brightWhite);
 			let clientId = botSettings.create({
 				name: "commandPrefix",
@@ -294,6 +354,94 @@ client.on('interactionCreate', async interaction => {
 		if (interaction.commandName === 'ping') {
 			await interaction.reply('Pong!');
 		}
+
+		// Commandes pour le bot de musique
+		let guildQueue = client.player.getQueue(message.guild.id);
+
+		if (interaction.commandName === 'play') {
+			let queue = client.player.createQueue(message.guild.id);
+			await queue.join(message.member.voice.channel);
+			let song = await queue.play( interaction.options.getString('titre') ).catch(_ => {
+				if(!guildQueue)
+					queue.stop();
+			});
+		}
+
+		if (interaction.commandName === 'playlist') {
+			let queue = client.player.createQueue(message.guild.id);
+			await queue.join(message.member.voice.channel);
+			let song = await queue.playlist( interaction.options.getString('titre') ).catch(_ => {
+				if(!guildQueue)
+					queue.stop();
+			});
+		}
+
+		if (interaction.commandName === 'skip') {
+			guildQueue.skip();
+		}
+
+		if (interaction.commandName === 'stop') {
+			guildQueue.stop();
+		}
+
+		if (interaction.commandName === 'removeLoop') {
+			guildQueue.setRepeatMode(RepeatMode.DISABLED); // or 0 instead of RepeatMode.DISABLED
+		}
+
+		if (interaction.commandName === 'toggleLoop') {
+			guildQueue.setRepeatMode(RepeatMode.SONG); // or 1 instead of RepeatMode.SONG
+		}
+
+		if (interaction.commandName === 'toggleQueueLoop') {
+			guildQueue.setRepeatMode(RepeatMode.QUEUE); // or 2 instead of RepeatMode.QUEUE
+		}
+
+		if (interaction.commandName === 'setVolume') {
+			guildQueue.setVolume(parseInt(args[0]));
+		}
+
+		if (interaction.commandName === 'seek') {
+			guildQueue.seek(parseInt(args[0]) * 1000);
+		}
+
+		if (interaction.commandName === 'clearQueue') {
+			guildQueue.clearQueue();
+		}
+
+		if (interaction.commandName === 'shuffle') {
+			guildQueue.shuffle();
+		}
+
+		if (interaction.commandName === 'getQueue') {
+			console.log(guildQueue);
+		}
+
+		if (interaction.commandName === 'getVolume') {
+			console.log(guildQueue.volume)
+		}
+
+		if (interaction.commandName === 'nowPlaying') {
+			console.log(`Now playing: ${guildQueue.nowPlaying}`);
+		}
+
+		if (interaction.commandName === 'pause') {
+			guildQueue.setPaused(true);
+		}
+
+		if (interaction.commandName === 'resume') {
+			guildQueue.setPaused(false);
+		}
+
+		if (interaction.commandName === 'remove') {
+			guildQueue.remove(parseInt(args[0]));
+		}
+
+		if (interaction.commandName === 'createProgressBar') {
+			const ProgressBar = guildQueue.createProgressBar();
+			
+			// [======>              ][00:35/2:20]
+			console.log(ProgressBar.prettier);
+		}
 	}	
 });
 
@@ -301,94 +449,8 @@ client.on('interactionCreate', async interaction => {
 const { RepeatMode } = require('discord-music-player');
 
 client.on('messageCreate', async (message) => {
-    const args = message.content.slice(settings.prefix.length).trim().split(/ +/g);
-    const command = args.shift();
-    let guildQueue = client.player.getQueue(message.guild.id);
-
-    if(command === 'play') {
-        let queue = client.player.createQueue(message.guild.id);
-        await queue.join(message.member.voice.channel);
-        let song = await queue.play(args.join(' ')).catch(_ => {
-            if(!guildQueue)
-                queue.stop();
-        });
-    }
-
-    if(command === 'playlist') {
-        let queue = client.player.createQueue(message.guild.id);
-        await queue.join(message.member.voice.channel);
-        let song = await queue.playlist(args.join(' ')).catch(_ => {
-            if(!guildQueue)
-                queue.stop();
-        });
-    }
-
-    if(command === 'skip') {
-        guildQueue.skip();
-    }
-
-    if(command === 'stop') {
-        guildQueue.stop();
-    }
-
-    if(command === 'removeLoop') {
-        guildQueue.setRepeatMode(RepeatMode.DISABLED); // or 0 instead of RepeatMode.DISABLED
-    }
-
-    if(command === 'toggleLoop') {
-        guildQueue.setRepeatMode(RepeatMode.SONG); // or 1 instead of RepeatMode.SONG
-    }
-
-    if(command === 'toggleQueueLoop') {
-        guildQueue.setRepeatMode(RepeatMode.QUEUE); // or 2 instead of RepeatMode.QUEUE
-    }
-
-    if(command === 'setVolume') {
-        guildQueue.setVolume(parseInt(args[0]));
-    }
-
-    if(command === 'seek') {
-        guildQueue.seek(parseInt(args[0]) * 1000);
-    }
-
-    if(command === 'clearQueue') {
-        guildQueue.clearQueue();
-    }
-
-    if(command === 'shuffle') {
-        guildQueue.shuffle();
-    }
-
-    if(command === 'getQueue') {
-        console.log(guildQueue);
-    }
-
-    if(command === 'getVolume') {
-        console.log(guildQueue.volume)
-    }
-
-    if(command === 'nowPlaying') {
-        console.log(`Now playing: ${guildQueue.nowPlaying}`);
-    }
-
-    if(command === 'pause') {
-        guildQueue.setPaused(true);
-    }
-
-    if(command === 'resume') {
-        guildQueue.setPaused(false);
-    }
-
-    if(command === 'remove') {
-        guildQueue.remove(parseInt(args[0]));
-    }
-
-    if(command === 'createProgressBar') {
-        const ProgressBar = guildQueue.createProgressBar();
-        
-        // [======>              ][00:35/2:20]
-        console.log(ProgressBar.prettier);
-    }
+	
+    
 })
 
 
