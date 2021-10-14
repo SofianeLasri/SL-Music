@@ -458,11 +458,11 @@ client.on('interactionCreate', async interaction => {
 		}
 
 		if (interaction.commandName === 'get-queue') {
-			await interaction.reply(guildQueue);
+			await interaction.reply("File d'attente: "+guildQueue);
 		}
 
 		if (interaction.commandName === 'get-volume') {
-			await interaction.reply(guildQueue.volume);
+			await interaction.reply("Volume: "+guildQueue.volume);
 		}
 
 		if (interaction.commandName === 'now-playing') {
