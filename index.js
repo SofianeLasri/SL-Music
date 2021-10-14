@@ -77,34 +77,24 @@ const commands = [{
 	description: 'Stoppe la musique'
 },
 {
-	name: 'removeLoop',
+	name: 'remove-loop',
 	description: 'Supprimer la boucle'
 },
 {
-	name: 'toggleLoop',
+	name: 'toggle-loop',
 	description: 'Activer la boucle'
 },
 {
-	name: 'toggleQueueLoop',
+	name: 'toggle-queue-loop',
 	description: 'Activer la boucle de la liste'
 },
 {
-	name: 'setVolume',
+	name: 'set-volume',
 	description: 'Permet de régler le volume.',
 	options: [{
 		name: "volume", // no uppercase as well
 		description: "Volume en %.",
 		type: 4,
-		required: true
-	}]
-},
-{
-	name: 'delanniv',
-	description: '[Admin] Supprime la date d\'anniversaire d\'un membre.',
-	options: [{
-		name: "membre", // no uppercase as well
-		description: "Membre à supprimer la date d'anniversaire.",
-		type: 6,
 		required: true
 	}]
 }];
