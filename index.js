@@ -346,11 +346,11 @@ client.on('interactionCreate', async interaction => {
 		}
 
 		// Commandes pour le bot de musique
-		let guildQueue = client.player.getQueue(message.guild.id);
+		let guildQueue = client.player.getQueue(interaction.guild.id);
 
 		if (interaction.commandName === 'play') {
-			let queue = client.player.createQueue(message.guild.id);
-			await queue.join(message.member.voice.channel);
+			let queue = client.player.createQueue(interaction.guild.id);
+			await queue.join(interaction.member.voice.channel);
 			let song = await queue.play( interaction.options.getString('titre') ).catch(_ => {
 				if(!guildQueue)
 					queue.stop();
@@ -358,8 +358,8 @@ client.on('interactionCreate', async interaction => {
 		}
 
 		if (interaction.commandName === 'playlist') {
-			let queue = client.player.createQueue(message.guild.id);
-			await queue.join(message.member.voice.channel);
+			let queue = client.player.createQueue(interaction.guild.id);
+			await queue.join(interaction.member.voice.channel);
 			let song = await queue.playlist( interaction.options.getString('titre') ).catch(_ => {
 				if(!guildQueue)
 					queue.stop();
