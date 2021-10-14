@@ -356,10 +356,10 @@ client.on('interactionCreate', async interaction => {
 			let queue = client.player.createQueue(interaction.guild.id);
 			await queue.join(interaction.member.voice.channel);
 			let song = await queue.play( interaction.options.getString('titre') ).catch(async _ => {
-				if(!guildQueue)
+				if(!guildQueue){
 					queue.stop();
 					await interaction.reply("Impossible de lire la musique. :( (check la console)");
-				else {
+				}else{
 					await interaction.reply("Musique: "+guildQueue.nowPlaying);
 				}
 				await interaction.reply("song: "+song);
