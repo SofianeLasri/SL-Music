@@ -355,11 +355,11 @@ client.on('interactionCreate', async interaction => {
 		if (interaction.commandName === 'play') {
 			let queue = client.player.createQueue(interaction.guild.id);
 			await queue.join(interaction.member.voice.channel);
-			let song = await queue.play( interaction.options.getString('titre') ).catch(_ => {
+			let song = await queue.play( interaction.options.getString('titre') ).catch(async _ => {
 				if(!guildQueue)
 					queue.stop();
 				else {
-					interaction.reply(guildQueue.nowPlaying);
+					await interaction.reply("Musique: "+guildQueue.nowPlaying);
 				}
 			});
 		}
