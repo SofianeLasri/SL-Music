@@ -359,7 +359,7 @@ client.on('interactionCreate', async interaction => {
 				if(!guildQueue)
 					queue.stop();
 				else {
-					await interaction.reply(guildQueue.nowPlaying);
+					interaction.reply(guildQueue.nowPlaying);
 				}
 			});
 		}
