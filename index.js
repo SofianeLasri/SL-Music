@@ -362,8 +362,9 @@ client.on('interactionCreate', async interaction => {
 				}else{
 					await interaction.reply("Musique: "+guildQueue.nowPlaying);
 				}
-				console.log("song: "+song);
+				
 			});
+			await interaction.reply("song: "+song);
 		}
 
 		if (interaction.commandName === 'playlist') {
