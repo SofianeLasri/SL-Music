@@ -275,6 +275,9 @@ const settings = {
     token: 'YourBotTokenHere'
 };
 
+////////////////////////////////////////////////////////////////
+// Partie musique
+
 const { Player } = require("discord-music-player");
 const player = new Player(client, {
     leaveOnEmpty: false, // This options are optional.
@@ -313,6 +316,7 @@ client.player
         console.log(`Error: ${error} in ${queue.guild.name}`);
     });
 
+////////////////////////////////////////////////////////////////
 
 client.on("ready", async function () {
     console.log('\n'+`
@@ -354,6 +358,9 @@ client.on('interactionCreate', async interaction => {
 			let song = await queue.play( interaction.options.getString('titre') ).catch(_ => {
 				if(!guildQueue)
 					queue.stop();
+				else {
+					await interaction.reply(guildQueue.nowPlaying);
+				}
 			});
 		}
 
