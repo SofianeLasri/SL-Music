@@ -401,7 +401,7 @@ client.on('interactionCreate', async interaction => {
 					queue.stop();
 				}
 			});
-			await interaction.editReply("song: "+song);
+			await interaction.editReply("Lecture de **"+song+"**");
 		}
 
 		if (interaction.commandName === 'playlist') {
