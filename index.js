@@ -97,6 +97,46 @@ const commands = [{
 		type: 4,
 		required: true
 	}]
+},
+{
+	name: 'seek',
+	description: 'Prrr pas encore testé x)'
+},
+{
+	name: 'clear-queue',
+	description: 'Vide la file de lecture'
+},
+{
+	name: 'shuffle',
+	description: 'Ca fait penser à waffle'
+},
+{
+	name: 'get-queue',
+	description: 'Permet de voir la file d\'attente.'
+},
+{
+	name: 'get-volume',
+	description: 'Permet de voir le niveau de volume.'
+},
+{
+	name: 'now-playing',
+	description: 'Permet de voir la musique actuelle.'
+},
+{
+	name: 'pause',
+	description: 'Met la musique en pause.'
+},
+{
+	name: 'resume',
+	description: 'Reprend la musique'
+},
+{
+	name: 'remove',
+	description: 'Supprime la musique actuelle (pas de tout internet, malheuresement)'
+},
+{
+	name: 'create-progress-bar',
+	description: 'Permet de créer une barre de progression (pour la musique)'
 }];
 
 ////////////////////////////////////////////////////////////////
@@ -374,70 +414,81 @@ client.on('interactionCreate', async interaction => {
 		}
 
 		if (interaction.commandName === 'skip') {
+			await interaction.reply('Musique skippée.');
 			guildQueue.skip();
 		}
 
 		if (interaction.commandName === 'stop') {
+			await interaction.reply('Musique arrêtée.');
 			guildQueue.stop();
 		}
 
-		if (interaction.commandName === 'removeLoop') {
+		if (interaction.commandName === 'remove-loop') {
+			await interaction.reply('Arrêt de la lecture en boucle.');
 			guildQueue.setRepeatMode(RepeatMode.DISABLED); // or 0 instead of RepeatMode.DISABLED
 		}
 
-		if (interaction.commandName === 'toggleLoop') {
+		if (interaction.commandName === 'toggle-loop') {
+			await interaction.reply('Lecture en boucle '+RepeatMode.SONG);
 			guildQueue.setRepeatMode(RepeatMode.SONG); // or 1 instead of RepeatMode.SONG
 		}
 
-		if (interaction.commandName === 'toggleQueueLoop') {
+		if (interaction.commandName === 'toggle-queue-loop') {
+			await interaction.reply('Lecture en boucle de la file d\'attente: '+RepeatMode.QUEUE);
 			guildQueue.setRepeatMode(RepeatMode.QUEUE); // or 2 instead of RepeatMode.QUEUE
 		}
 
 		if (interaction.commandName === 'setVolume') {
-			guildQueue.setVolume(parseInt(args[0]));
+			await interaction.reply('Le volume a été réglé à '+interaction.options.getInteger('volume')."%");
+			guildQueue.setVolume(interaction.options.getInteger('volume'));
 		}
 
 		if (interaction.commandName === 'seek') {
 			guildQueue.seek(parseInt(args[0]) * 1000);
 		}
 
-		if (interaction.commandName === 'clearQueue') {
+		if (interaction.commandName === 'clear-queue') {
+			await interaction.reply('La liste de lecture a été vidée.');
 			guildQueue.clearQueue();
 		}
 
 		if (interaction.commandName === 'shuffle') {
+			await interaction.reply('La liste de lecture a été mélangée.');
 			guildQueue.shuffle();
 		}
 
-		if (interaction.commandName === 'getQueue') {
-			console.log(guildQueue);
+		if (interaction.commandName === 'get-queue') {
+			await interaction.reply(guildQueue);
 		}
 
-		if (interaction.commandName === 'getVolume') {
-			console.log(guildQueue.volume)
+		if (interaction.commandName === 'get-volume') {
+			await interaction.reply(guildQueue.volume);
 		}
 
-		if (interaction.commandName === 'nowPlaying') {
-			console.log(`Now playing: ${guildQueue.nowPlaying}`);
+		if (interaction.commandName === 'now-playing') {
+			await interaction.reply(`Lecture en cours: ${guildQueue.nowPlaying}`);
 		}
 
 		if (interaction.commandName === 'pause') {
+			await interaction.reply("La musique a été mise en pause.");
 			guildQueue.setPaused(true);
 		}
 
 		if (interaction.commandName === 'resume') {
+			await interaction.reply("Zéé repartiii!");
 			guildQueue.setPaused(false);
 		}
 
 		if (interaction.commandName === 'remove') {
+			await interaction.reply("La musique a été supprimée.");
 			guildQueue.remove(parseInt(args[0]));
 		}
 
-		if (interaction.commandName === 'createProgressBar') {
+		if (interaction.commandName === 'create-progress-bar') {
 			const ProgressBar = guildQueue.createProgressBar();
 			
 			// [======>              ][00:35/2:20]
-			console.log(ProgressBar.prettier);
+			await interaction.reply(ProgressBar.prettier);
 		}
 	}	
 });
