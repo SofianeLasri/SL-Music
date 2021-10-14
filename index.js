@@ -439,7 +439,7 @@ client.on('interactionCreate', async interaction => {
 		}
 
 		if (interaction.commandName === 'setVolume') {
-			await interaction.reply('Le volume a été réglé à '+interaction.options.getInteger('volume')."%");
+			await interaction.reply('Le volume a été réglé à '+interaction.options.getInteger('volume')+"%");
 			guildQueue.setVolume(interaction.options.getInteger('volume'));
 		}
 
