@@ -358,9 +358,11 @@ client.on('interactionCreate', async interaction => {
 			let song = await queue.play( interaction.options.getString('titre') ).catch(async _ => {
 				if(!guildQueue)
 					queue.stop();
+					await interaction.reply("Impossible de lire la musique. :( (check la console)");
 				else {
 					await interaction.reply("Musique: "+guildQueue.nowPlaying);
 				}
+				await interaction.reply("song: "+song);
 			});
 		}
 
