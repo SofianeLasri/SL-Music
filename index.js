@@ -361,7 +361,7 @@ client.on('interactionCreate', async interaction => {
 					queue.stop();
 				}
 			});
-			await interaction.editReply("song: "+guildQueue.nowPlaying);
+			await interaction.editReply("song: "+song);
 		}
 
 		if (interaction.commandName === 'playlist') {
