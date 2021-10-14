@@ -353,6 +353,7 @@ client.on('interactionCreate', async interaction => {
 		let guildQueue = client.player.getQueue(interaction.guild.id);
 
 		if (interaction.commandName === 'play') {
+			await interaction.reply('Attend j\'appelle Jacqueline de la compta');
 			let queue = client.player.createQueue(interaction.guild.id);
 			await queue.join(interaction.member.voice.channel);
 			let song = await queue.play( interaction.options.getString('titre') ).catch(async _ => {
@@ -360,7 +361,7 @@ client.on('interactionCreate', async interaction => {
 					queue.stop();
 				}
 			});
-			await interaction.reply("song: ");
+			await interaction.editReply("song: "+guildQueue.nowPlaying);
 		}
 
 		if (interaction.commandName === 'playlist') {
