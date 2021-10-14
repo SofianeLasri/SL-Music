@@ -462,7 +462,7 @@ client.on('interactionCreate', async interaction => {
 		}
 
 		if (interaction.commandName === 'get-volume') {
-			await interaction.reply("Volume: "+guildQueue.volume);
+			await interaction.reply("Volume: "+guildQueue.volume+"%");
 		}
 
 		if (interaction.commandName === 'now-playing') {
