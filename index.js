@@ -364,7 +364,7 @@ client.on('interactionCreate', async interaction => {
 				}
 				
 			});
-			await interaction.reply("song: "+song);
+			console.log("song: "+song);
 		}
 
 		if (interaction.commandName === 'playlist') {
