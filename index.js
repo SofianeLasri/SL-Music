@@ -493,12 +493,9 @@ client.on('interactionCreate', async interaction => {
 	}	
 });
 
-// Tests
-const { RepeatMode } = require('discord-music-player');
 
 client.on('messageCreate', async (message) => {
 	
-    
 })
 
 
